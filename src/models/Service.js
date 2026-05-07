@@ -13,7 +13,6 @@ const serviceSchema = new mongoose.Schema(
       trim: true,
     },
     details: {
-      type: [String],
       default: [],
     },
     shortDescription: {
