@@ -10,8 +10,8 @@ import { verifyJWT, isAdmin } from "../middlewares/auth.js";
 import upload from "../config/multer.js";
 
 const router = Router();
-
-router.post("/", verifyJWT, isAdmin, upload.single("serviceImage"), createService);
+// verifyJWT & isAdmin add after user configuration
+router.post("/",  upload.single("serviceImage"), createService);
 router.get("/", getAllServices);
 router.get("/:id", getServiceById);
 router.patch("/:id", verifyJWT, isAdmin, upload.single("serviceImage"), updateService);

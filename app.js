@@ -26,11 +26,11 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // Routes
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/services", serviceRoutes);
-app.use("/api/v1/testimonials", testimonialRoutes);
-app.use("/api/v1/inquiries", inquiryRoutes);
-app.use("/api/v1/email", emailRoutes);
+app.use("/otg/api/v1/auth", authRoutes);
+app.use("/otg/api/v1/services", serviceRoutes);
+app.use("/otg/api/v1/testimonials", testimonialRoutes);
+app.use("/otg/api/v1/inquiries", inquiryRoutes);
+app.use("/otg/api/v1/email", emailRoutes);
 
 // Health check route
 app.get("/", (req, res) => {
