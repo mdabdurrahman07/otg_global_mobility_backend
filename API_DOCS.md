@@ -5,7 +5,7 @@
 OTG Global Mobility Backend is a comprehensive REST API built with Node.js, Express.js, and MongoDB. It provides endpoints for managing users, services, testimonials, inquiries, and email communications. The API uses JWT-based authentication with access and refresh tokens stored in HTTP-only cookies.
 
 **Base URL**: `http://localhost:5000`  
-**API Version**: `/api/v1`
+**API Version**: `/otg/api/v1`
 
 ---
 
@@ -76,7 +76,7 @@ npm run dev
 
 ## API Routes
 
-### Authentication Routes: `/api/v1/auth`
+### Authentication Routes: `/otg/api/v1/auth`
 
 | Method | Endpoint       | Access  | Description                    |
 |--------|----------------|---------|--------------------------------|
@@ -87,7 +87,7 @@ npm run dev
 | GET    | /me            | Private | Get logged-in user profile     |
 
 #### 1. Register User
-**Endpoint**: `POST /api/v1/auth/register`  
+**Endpoint**: `POST /otg/api/v1/auth/register`  
 **Access**: Admin only  
 **Requires JWT**: Yes
 
@@ -118,7 +118,7 @@ npm run dev
 ```
 
 #### 2. Login User
-**Endpoint**: `POST /api/v1/auth/login`  
+**Endpoint**: `POST /otg/api/v1/auth/login`  
 **Access**: Public
 
 **Request**:
@@ -149,7 +149,7 @@ npm run dev
 ```
 
 #### 3. Logout User
-**Endpoint**: `POST /api/v1/auth/logout`  
+**Endpoint**: `POST /otg/api/v1/auth/logout`  
 **Access**: Private (requires auth)
 
 **Response** (200):
@@ -163,7 +163,7 @@ npm run dev
 ```
 
 #### 4. Refresh Access Token
-**Endpoint**: `POST /api/v1/auth/refresh-token`  
+**Endpoint**: `POST /otg/api/v1/auth/refresh-token`  
 **Access**: Public
 
 **Response** (200):
@@ -180,7 +180,7 @@ npm run dev
 ```
 
 #### 5. Get Current User
-**Endpoint**: `GET /api/v1/auth/me`  
+**Endpoint**: `GET /otg/api/v1/auth/me`  
 **Access**: Private (requires auth)
 
 **Response** (200):
@@ -201,7 +201,7 @@ npm run dev
 
 ---
 
-### Services Routes: `/api/v1/services`
+### Services Routes: `/otg/api/v1/services`
 
 | Method | Endpoint | Access | Description           |
 |--------|----------|--------|----------------------|
@@ -212,7 +212,7 @@ npm run dev
 | DELETE | /:id     | Admin  | Delete a service      |
 
 #### 1. Create Service
-**Endpoint**: `POST /api/v1/services`  
+**Endpoint**: `POST /otg/api/v1/services`  
 **Access**: Admin only
 
 **Request**:
@@ -243,7 +243,7 @@ npm run dev
 ```
 
 #### 2. Get All Services
-**Endpoint**: `GET /api/v1/services`  
+**Endpoint**: `GET /otg/api/v1/services`  
 **Access**: Public
 
 **Response** (200):
@@ -266,26 +266,26 @@ npm run dev
 ```
 
 #### 3. Get Single Service
-**Endpoint**: `GET /api/v1/services/:id`  
+**Endpoint**: `GET /otg/api/v1/services/:id`  
 **Access**: Public
 
 **Response** (200): Same as single service object
 
 #### 4. Update Service
-**Endpoint**: `PATCH /api/v1/services/:id`  
+**Endpoint**: `PATCH /otg/api/v1/services/:id`  
 **Access**: Admin only
 
 **Request**: Same as create (all fields optional)
 
 #### 5. Delete Service
-**Endpoint**: `DELETE /api/v1/services/:id`  
+**Endpoint**: `DELETE /otg/api/v1/services/:id`  
 **Access**: Admin only
 
 **Response** (200): Returns deleted service object
 
 ---
 
-### Testimonials Routes: `/api/v1/testimonials`
+### Testimonials Routes: `/otg/api/v1/testimonials`
 
 | Method | Endpoint | Access | Description              |
 |--------|----------|--------|--------------------------|
@@ -294,7 +294,7 @@ npm run dev
 | DELETE | /:id     | Admin  | Delete a testimonial     |
 
 #### 1. Create Testimonial
-**Endpoint**: `POST /api/v1/testimonials`  
+**Endpoint**: `POST /otg/api/v1/testimonials`  
 **Access**: Admin only
 
 **Request**:
@@ -325,20 +325,20 @@ npm run dev
 ```
 
 #### 2. Get All Testimonials
-**Endpoint**: `GET /api/v1/testimonials`  
+**Endpoint**: `GET /otg/api/v1/testimonials`  
 **Access**: Public
 
 **Response** (200): Returns array of testimonials
 
 #### 3. Delete Testimonial
-**Endpoint**: `DELETE /api/v1/testimonials/:id`  
+**Endpoint**: `DELETE /otg/api/v1/testimonials/:id`  
 **Access**: Admin only
 
 **Response** (200): Returns deleted testimonial object
 
 ---
 
-### Inquiries Routes: `/api/v1/inquiries`
+### Inquiries Routes: `/otg/api/v1/inquiries`
 
 | Method | Endpoint | Access | Description        |
 |--------|----------|--------|---------------------|
@@ -347,7 +347,7 @@ npm run dev
 | DELETE | /:id     | Admin  | Delete an inquiry   |
 
 #### 1. Create Inquiry
-**Endpoint**: `POST /api/v1/inquiries`  
+**Endpoint**: `POST /otg/api/v1/inquiries`  
 **Access**: Public
 
 **Request**:
@@ -378,20 +378,20 @@ npm run dev
 ```
 
 #### 2. Get All Inquiries
-**Endpoint**: `GET /api/v1/inquiries`  
+**Endpoint**: `GET /otg/api/v1/inquiries`  
 **Access**: Admin only
 
 **Response** (200): Returns array of inquiries
 
 #### 3. Delete Inquiry
-**Endpoint**: `DELETE /api/v1/inquiries/:id`  
+**Endpoint**: `DELETE /otg/api/v1/inquiries/:id`  
 **Access**: Admin only
 
 **Response** (200): Returns deleted inquiry object
 
 ---
 
-### Email Routes: `/api/v1/email`
+### Email Routes: `/otg/api/v1/email`
 
 | Method | Endpoint      | Access | Description              |
 |--------|---------------|--------|--------------------------|
@@ -399,7 +399,7 @@ npm run dev
 | POST   | /reply/:id    | Admin  | Reply to inquiry         |
 
 #### 1. Send Email
-**Endpoint**: `POST /api/v1/email/send`  
+**Endpoint**: `POST /otg/api/v1/email/send`  
 **Access**: Admin only
 
 **Request**:
@@ -428,7 +428,7 @@ npm run dev
 ```
 
 #### 2. Reply to Inquiry
-**Endpoint**: `POST /api/v1/email/reply/:id`  
+**Endpoint**: `POST /otg/api/v1/email/reply/:id`  
 **Access**: Admin only
 
 **Request**:
