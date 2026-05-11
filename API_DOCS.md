@@ -85,6 +85,7 @@ npm run dev
 | POST   | /logout        | Private | Logout and clear cookies       |
 | POST   | /refresh-token | Public  | Get new access token           |
 | GET    | /me            | Private | Get logged-in user profile     |
+| PATCH  | /me            | Private | Update user profile            |
 
 #### 1. Register User
 **Endpoint**: `POST /otg/api/v1/auth/register`  
@@ -199,6 +200,37 @@ npm run dev
 }
 ```
 
+#### 6. Update User Profile
+**Endpoint**: `PATCH /otg/api/v1/auth/me`  
+**Access**: Private (requires auth)
+
+**Request**:
+```json
+{
+  "name": "John Doe",
+  "email": "newemail@example.com",
+  "password": "newpassword123",
+  "userImage": "file (multipart/form-data, optional)"
+}
+```
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": {
+    "_id": "user_id",
+    "name": "John Doe",
+    "email": "newemail@example.com",
+    "userImage": "https://cloudinary.com/...",
+    "role": "user",
+    "updatedAt": "2026-05-07T10:30:00Z"
+  },
+  "message": "User updated successfully",
+  "success": true
+}
+```
+
 ---
 
 ### Services Routes: `/otg/api/v1/services`
@@ -291,6 +323,7 @@ npm run dev
 |--------|----------|--------|--------------------------|
 | POST   | /        | Admin  | Create a testimonial     |
 | GET    | /        | Public | Get all testimonials     |
+| PATCH  | /:id     | Admin  | Update a testimonial     |
 | DELETE | /:id     | Admin  | Delete a testimonial     |
 
 #### 1. Create Testimonial
@@ -330,7 +363,38 @@ npm run dev
 
 **Response** (200): Returns array of testimonials
 
-#### 3. Delete Testimonial
+#### 3. Update Testimonial
+**Endpoint**: `PATCH /otg/api/v1/testimonials/:id`  
+**Access**: Admin only
+
+**Request**:
+```json
+{
+  "author": "Jane Smith",
+  "quote": "Outstanding service and support!",
+  "location": "Canada",
+  "authorImage": "file (multipart/form-data, optional)"
+}
+```
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": {
+    "_id": "testimonial_id",
+    "author": "Jane Smith",
+    "quote": "Outstanding service and support!",
+    "location": "Canada",
+    "authorImage": "https://res.cloudinary.com/...",
+    "updatedAt": "2026-05-07T10:30:00Z"
+  },
+  "message": "Testimonial updated successfully",
+  "success": true
+}
+```
+
+#### 4. Delete Testimonial
 **Endpoint**: `DELETE /otg/api/v1/testimonials/:id`  
 **Access**: Admin only
 
@@ -344,6 +408,7 @@ npm run dev
 |--------|----------|--------|---------------------|
 | POST   | /        | Public | Submit an inquiry   |
 | GET    | /        | Admin  | Get all inquiries   |
+| PATCH  | /:id     | Admin  | Update an inquiry   |
 | DELETE | /:id     | Admin  | Delete an inquiry   |
 
 #### 1. Create Inquiry
@@ -383,7 +448,38 @@ npm run dev
 
 **Response** (200): Returns array of inquiries
 
-#### 3. Delete Inquiry
+#### 3. Update Inquiry
+**Endpoint**: `PATCH /otg/api/v1/inquiries/:id`  
+**Access**: Admin only
+
+**Request**:
+```json
+{
+  "inquiryEmail": "newemail@example.com",
+  "inquiryPhone": "+1-987-654-3210",
+  "inquiryService": "Work Visa Consultation",
+  "inquiryCalc": "CGPA"
+}
+```
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": {
+    "_id": "inquiry_id",
+    "inquiryEmail": "newemail@example.com",
+    "inquiryPhone": "+1-987-654-3210",
+    "inquiryService": "Work Visa Consultation",
+    "inquiryCalc": "CGPA",
+    "updatedAt": "2026-05-07T10:30:00Z"
+  },
+  "message": "Inquiry updated successfully",
+  "success": true
+}
+```
+
+#### 4. Delete Inquiry
 **Endpoint**: `DELETE /otg/api/v1/inquiries/:id`  
 **Access**: Admin only
 
@@ -553,10 +649,11 @@ All successful responses follow this format:
 ### User Schema
 ```javascript
 {
+  name: String (optional),
   email: String (required, unique, lowercase),
   password: String (required, hashed),
-  userImage: String (Cloudinary URL),
-  role: String (enum: ['user', 'admin'], default: 'user'),
+  userImage: String (Cloudinary URL, optional),
+  role: String (enum: ['user', 'admin', 'student'], default: 'user'),
   refreshToken: String,
   timestamps: true
 }

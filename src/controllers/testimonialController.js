@@ -44,6 +44,34 @@ const getAllTestimonials = asyncHandler(async (req, res) => {
     );
 });
 
+const updateTestimonial = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { author, quote, location } = req.body;
+
+  const testimonial = await Testimonial.findById(id);
+
+  if (!testimonial) {
+    throw new ApiError(404, "Testimonial not found");
+  }
+
+  // Update fields if provided
+  if (author) testimonial.author = author.trim();
+  if (quote) testimonial.quote = quote.trim();
+  if (location) testimonial.location = location.trim();
+
+  // Handle image update if file is provided
+  if (req.file) {
+    const uploadResponse = await uploadOnCloudinary(req.file.path, "testimonials");
+    testimonial.authorImage = uploadResponse.secure_url;
+  }
+
+  await testimonial.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, testimonial, "Testimonial updated successfully"));
+});
+
 const deleteTestimonial = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -58,4 +86,4 @@ const deleteTestimonial = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, testimonial, "Testimonial deleted successfully"));
 });
 
-export { createTestimonial, getAllTestimonials, deleteTestimonial };
+export { createTestimonial, getAllTestimonials, updateTestimonial, deleteTestimonial };

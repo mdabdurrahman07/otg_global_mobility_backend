@@ -40,6 +40,34 @@ const getAllInquiries = asyncHandler(async (req, res) => {
     );
 });
 
+const updateInquiry = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { inquiryEmail, inquiryPhone, inquiryService, inquiryCalc } = req.body;
+
+  const inquiry = await Inquiry.findById(id);
+
+  if (!inquiry) {
+    throw new ApiError(404, "Inquiry not found");
+  }
+
+  // Validate inquiry calculation type if provided
+  if (inquiryCalc && !["Eligibility", "CGPA"].includes(inquiryCalc)) {
+    throw new ApiError(400, "Inquiry calculation type must be 'Eligibility' or 'CGPA'");
+  }
+
+  // Update fields if provided
+  if (inquiryEmail) inquiry.inquiryEmail = inquiryEmail.toLowerCase();
+  if (inquiryPhone) inquiry.inquiryPhone = inquiryPhone.trim();
+  if (inquiryService) inquiry.inquiryService = inquiryService.trim();
+  if (inquiryCalc) inquiry.inquiryCalc = inquiryCalc;
+
+  await inquiry.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, inquiry, "Inquiry updated successfully"));
+});
+
 const deleteInquiry = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -54,4 +82,4 @@ const deleteInquiry = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, inquiry, "Inquiry deleted successfully"));
 });
 
-export { createInquiry, getAllInquiries, deleteInquiry };
+export { createInquiry, getAllInquiries, updateInquiry, deleteInquiry };

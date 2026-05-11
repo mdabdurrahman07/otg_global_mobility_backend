@@ -179,6 +179,53 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "User profile retrieved successfully"));
 });
 
+const updateUser = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { name, email, password } = req.body;
+
+  const user = await User.findById(userId).select("+password");
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // Check if email is being updated and if it already exists
+  if (email && email !== user.email) {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw new ApiError(409, "Email already in use");
+    }
+    user.email = email.toLowerCase();
+  }
+
+  // Update name if provided
+  if (name) {
+    user.name = name.trim();
+  }
+
+  // Handle image update if file is provided
+  if (req.file) {
+    const uploadResponse = await uploadOnCloudinary(req.file.path, "users");
+    user.userImage = uploadResponse.secure_url;
+  }
+
+  // Update password if provided
+  if (password) {
+    if (password.length < 6) {
+      throw new ApiError(400, "Password must be at least 6 characters");
+    }
+    user.password = password;
+  }
+
+  await user.save({ validateBeforeSave: false });
+
+  const updatedUser = await User.findById(userId).select("-password -refreshToken");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedUser, "User updated successfully"));
+});
+
 import jwt from "jsonwebtoken";
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, getCurrentUser };
+export { registerUser, loginUser, logoutUser, refreshAccessToken, getCurrentUser, updateUser };
