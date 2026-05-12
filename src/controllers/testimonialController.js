@@ -15,7 +15,10 @@ const createTestimonial = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Author image is required");
   }
 
-  const uploadResponse = await uploadOnCloudinary(req.file.path, "testimonials");
+  const uploadResponse = await uploadOnCloudinary(
+    req.file.path,
+    "testimonials",
+  );
   const authorImage = uploadResponse.secure_url;
 
   const testimonial = await Testimonial.create({
@@ -27,7 +30,9 @@ const createTestimonial = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(201, testimonial, "Testimonial created successfully"));
+    .json(
+      new ApiResponse(201, testimonial, "Testimonial created successfully"),
+    );
 });
 
 const getAllTestimonials = asyncHandler(async (req, res) => {
@@ -39,8 +44,8 @@ const getAllTestimonials = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         testimonials,
-        `Retrieved ${testimonials.length} testimonials successfully`
-      )
+        `Retrieved ${testimonials.length} testimonials successfully`,
+      ),
     );
 });
 
@@ -61,7 +66,10 @@ const updateTestimonial = asyncHandler(async (req, res) => {
 
   // Handle image update if file is provided
   if (req.file) {
-    const uploadResponse = await uploadOnCloudinary(req.file.path, "testimonials");
+    const uploadResponse = await uploadOnCloudinary(
+      req.file.path,
+      "testimonials",
+    );
     testimonial.authorImage = uploadResponse.secure_url;
   }
 
@@ -69,7 +77,9 @@ const updateTestimonial = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, testimonial, "Testimonial updated successfully"));
+    .json(
+      new ApiResponse(200, testimonial, "Testimonial updated successfully"),
+    );
 });
 
 const deleteTestimonial = asyncHandler(async (req, res) => {
@@ -83,7 +93,14 @@ const deleteTestimonial = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, testimonial, "Testimonial deleted successfully"));
+    .json(
+      new ApiResponse(200, testimonial, "Testimonial deleted successfully"),
+    );
 });
 
-export { createTestimonial, getAllTestimonials, updateTestimonial, deleteTestimonial };
+export {
+  createTestimonial,
+  getAllTestimonials,
+  updateTestimonial,
+  deleteTestimonial,
+};
