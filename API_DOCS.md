@@ -84,8 +84,10 @@ npm run dev
 | POST   | /login         | Public  | Login user                     |
 | POST   | /logout        | Private | Logout and clear cookies       |
 | POST   | /refresh-token | Public  | Get new access token           |
+| GET    | /              | Admin   | Get all users                  |
 | GET    | /me            | Private | Get logged-in user profile     |
-| PATCH  | /me            | Private | Update user profile            |
+| PATCH  | /:userId       | Admin   | Update user profile            |
+| DELETE | /:userId       | Admin   | Delete a user                  |
 
 #### 1. Register User
 **Endpoint**: `POST /otg/api/v1/auth/register`  
@@ -95,6 +97,7 @@ npm run dev
 **Request**:
 ```json
 {
+  "name": "John Doe",
   "email": "user@example.com",
   "password": "password123",
   "role": "user",
@@ -108,6 +111,7 @@ npm run dev
   "statusCode": 201,
   "data": {
     "_id": "user_id",
+    "name": "John Doe",
     "email": "user@example.com",
     "userImage": "https://cloudinary.com/...",
     "role": "user",
@@ -137,6 +141,7 @@ npm run dev
   "data": {
     "user": {
       "_id": "user_id",
+      "name": "John Doe",
       "email": "user@example.com",
       "userImage": "https://cloudinary.com/...",
       "role": "user"
@@ -180,7 +185,50 @@ npm run dev
 }
 ```
 
-#### 5. Get Current User
+#### 5. Get All Users
+**Endpoint**: `GET /otg/api/v1/auth`  
+**Access**: Admin only  
+**Requires JWT**: Yes
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "_id": "user_id_1",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "userImage": "https://cloudinary.com/...",
+      "role": "user",
+      "createdAt": "2026-05-07T10:00:00Z",
+      "updatedAt": "2026-05-07T10:00:00Z"
+    },
+    {
+      "_id": "user_id_2",
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "userImage": "https://cloudinary.com/...",
+      "role": "admin",
+      "createdAt": "2026-05-06T09:00:00Z",
+      "updatedAt": "2026-05-06T09:00:00Z"
+    }
+  ],
+  "message": "Users retrieved successfully",
+  "success": true
+}
+```
+
+**Error Response** (403):
+```json
+{
+  "statusCode": 403,
+  "message": "Forbidden - Admin access required",
+  "success": false
+}
+```
+
+#### 6. Get Current User
 **Endpoint**: `GET /otg/api/v1/auth/me`  
 **Access**: Private (requires auth)
 
@@ -190,6 +238,7 @@ npm run dev
   "statusCode": 200,
   "data": {
     "_id": "user_id",
+    "name": "John Doe",
     "email": "user@example.com",
     "userImage": "https://cloudinary.com/...",
     "role": "user",
@@ -200,9 +249,13 @@ npm run dev
 }
 ```
 
-#### 6. Update User Profile
-**Endpoint**: `PATCH /otg/api/v1/auth/me`  
-**Access**: Private (requires auth)
+#### 7. Update User Profile
+**Endpoint**: `PATCH /otg/api/v1/auth/:userId`  
+**Access**: Admin only  
+**Requires JWT**: Yes
+
+**Request Parameters**:
+- `userId` (path parameter): The ID of the user to update
 
 **Request**:
 ```json
@@ -210,6 +263,7 @@ npm run dev
   "name": "John Doe",
   "email": "newemail@example.com",
   "password": "newpassword123",
+  "role": "admin",
   "userImage": "file (multipart/form-data, optional)"
 }
 ```
@@ -223,11 +277,56 @@ npm run dev
     "name": "John Doe",
     "email": "newemail@example.com",
     "userImage": "https://cloudinary.com/...",
-    "role": "user",
+    "role": "admin",
     "updatedAt": "2026-05-07T10:30:00Z"
   },
   "message": "User updated successfully",
   "success": true
+}
+```
+
+**Error Response** (403):
+```json
+{
+  "statusCode": 403,
+  "message": "Forbidden - Admin access required",
+  "success": false
+}
+```
+
+**Error Response** (404):
+```json
+{
+  "statusCode": 404,
+  "message": "User not found",
+  "success": false
+}
+```
+
+#### 8. Delete User
+**Endpoint**: `DELETE /otg/api/v1/auth/:userId`  
+**Access**: Admin only  
+**Requires JWT**: Yes
+
+**Request Parameters**:
+- `userId` (path parameter): The ID of the user to delete
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": {},
+  "message": "User deleted successfully",
+  "success": true
+}
+```
+
+**Error Response** (404):
+```json
+{
+  "statusCode": 404,
+  "message": "User not found",
+  "success": false
 }
 ```
 

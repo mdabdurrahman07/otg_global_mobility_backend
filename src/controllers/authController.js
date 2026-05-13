@@ -180,8 +180,8 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  const userId = req.user._id;
-  const { name, email, password } = req.body;
+  const userId = req.params.userId;
+  const { name, email, password, role } = req.body;
 
   const user = await User.findById(userId).select("+password");
 
@@ -201,6 +201,11 @@ const updateUser = asyncHandler(async (req, res) => {
   // Update name if provided
   if (name) {
     user.name = name.trim();
+  }
+
+  // Update role if provided
+  if (role) {
+    user.role = role;
   }
 
   // Handle image update if file is provided
@@ -226,6 +231,40 @@ const updateUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedUser, "User updated successfully"));
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+  const userId = req.params.userId;
+
+  if (!userId) {
+    throw new ApiError(400, "User ID is required");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  await User.findByIdAndDelete(userId);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "User deleted successfully"));
+});
+
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password -refreshToken");
+
+  if (!users || users.length === 0) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, [], "No users found"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, users, "Users retrieved successfully"));
+});
+
 import jwt from "jsonwebtoken";
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, getCurrentUser, updateUser };
+export { registerUser, loginUser, logoutUser, refreshAccessToken, getCurrentUser, updateUser, deleteUser, getAllUsers };
