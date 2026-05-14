@@ -10,17 +10,18 @@ const inquirySchema = new mongoose.Schema(
     inquiryPhone: {
       type: String,
       required: [true, "Phone number is required"],
+      match:[/^(?:\+88|88)?(01[3-9]\d{8})$/],
       trim: true,
     },
     inquiryService: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Service",
       required: [true, "Service name is required"],
       trim: true,
     },
     inquiryCalc: {
       type: String,
       enum: ["Eligibility", "CGPA"],
-      required: [true, "Calculation type is required"],
     },
   },
   { timestamps: true }

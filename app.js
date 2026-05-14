@@ -44,6 +44,7 @@ app.use("/otg/api/v1/services", serviceRoutes);
 app.use("/otg/api/v1/testimonials", testimonialRoutes);
 app.use("/otg/api/v1/inquiries", inquiryRoutes);
 app.use("/otg/api/v1/email", emailRoutes);
+app.use("/otg/api/v1/contacts", contactRoutes);
 
 // Health check route
 app.get("/", (req, res) => {
