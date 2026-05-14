@@ -22,10 +22,8 @@ const contactSchema = new mongoose.Schema(
       trim: true,
     },
     serviceType: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Service",
-      required: [true, "Service name is required"],
-      trim: true,
+      type: String,
+      required: [true, "please select a service type"]
     },
     markAsRead: {
       type: Boolean,

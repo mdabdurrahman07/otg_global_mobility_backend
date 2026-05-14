@@ -17,15 +17,13 @@ const createContact = asyncHandler(async (req, res) => {
     serviceType,
   });
 
-  const populatedContact = await contact.populate("serviceType");
-
   return res
     .status(201)
-    .json(new ApiResponse(201, populatedContact, "Contact created successfully"));
+    .json(new ApiResponse(201, contact, "Contact created successfully"));
 });
 
 const getAllContacts = asyncHandler(async (req, res) => {
-  const contacts = await Contact.find().populate("serviceType").sort({ createdAt: -1 });
+  const contacts = await Contact.find().sort({ createdAt: -1 });
 
   return res
     .status(200)
@@ -41,7 +39,7 @@ const getAllContacts = asyncHandler(async (req, res) => {
 const getContactById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const contact = await Contact.findById(id).populate("serviceType");
+  const contact = await Contact.findById(id);
 
   if (!contact) {
     throw new ApiError(404, "Contact not found");
@@ -70,7 +68,7 @@ const updateContact = asyncHandler(async (req, res) => {
 
   await contact.save();
 
-  const updatedContact = await Contact.findById(id).populate("serviceType");
+  const updatedContact = await Contact.findById(id);
 
   return res
     .status(200)

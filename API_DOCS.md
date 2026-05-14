@@ -436,7 +436,7 @@ npm run dev
   "name": "Jane Smith",
   "email": "jane@example.com",
   "phoneNumber": "+8801234567890",
-  "serviceType": "service_id"
+  "serviceType": "Student Visa Consultation"
 }
 ```
 
@@ -449,10 +449,7 @@ npm run dev
     "name": "Jane Smith",
     "email": "jane@example.com",
     "phoneNumber": "+8801234567890",
-    "serviceType": {
-      "_id": "service_id",
-      "serviceName": "Student Visa Consultation"
-    },
+    "serviceType": "Student Visa Consultation",
     "markAsRead": false,
     "createdAt": "2026-05-07T10:00:00Z"
   },
@@ -475,10 +472,7 @@ npm run dev
       "name": "Jane Smith",
       "email": "jane@example.com",
       "phoneNumber": "+8801234567890",
-      "serviceType": {
-        "_id": "service_id",
-        "serviceName": "Student Visa Consultation"
-      },
+      "serviceType": "Student Visa Consultation",
       "markAsRead": false,
       "createdAt": "2026-05-07T10:00:00Z",
       "updatedAt": "2026-05-07T10:00:00Z"
@@ -488,10 +482,7 @@ npm run dev
       "name": "John Doe",
       "email": "john@example.com",
       "phoneNumber": "+8801987654321",
-      "serviceType": {
-        "_id": "service_id",
-        "serviceName": "Work Visa Consultation"
-      },
+      "serviceType": "Work Visa Consultation",
       "markAsRead": true,
       "createdAt": "2026-05-06T09:00:00Z",
       "updatedAt": "2026-05-06T09:00:00Z"
@@ -518,7 +509,7 @@ npm run dev
   "name": "Jane Smith Updated",
   "email": "newemail@example.com",
   "phoneNumber": "+8801234567890",
-  "serviceType": "new_service_id",
+  "serviceType": "Work Visa Consultation",
   "markAsRead": true
 }
 ```
@@ -532,10 +523,7 @@ npm run dev
     "name": "Jane Smith Updated",
     "email": "newemail@example.com",
     "phoneNumber": "+8801234567890",
-    "serviceType": {
-      "_id": "new_service_id",
-      "serviceName": "Work Visa Consultation"
-    },
+    "serviceType": "Work Visa Consultation",
     "markAsRead": true,
     "updatedAt": "2026-05-07T10:30:00Z"
   },
