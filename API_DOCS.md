@@ -416,6 +416,150 @@ npm run dev
 
 ---
 
+### Contact Routes: `/otg/api/v1/contacts`
+
+| Method | Endpoint | Access | Description           |
+|--------|----------|--------|----------------------|
+| POST   | /        | Public | Create a contact      |
+| GET    | /        | Admin  | Get all contacts      |
+| GET    | /:id     | Admin  | Get single contact    |
+| PUT    | /:id     | Admin  | Update a contact      |
+| DELETE | /:id     | Admin  | Delete a contact      |
+
+#### 1. Create Contact
+**Endpoint**: `POST /otg/api/v1/contacts`  
+**Access**: Public
+
+**Request**:
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "phoneNumber": "+8801234567890",
+  "serviceType": "service_id"
+}
+```
+
+**Response** (201):
+```json
+{
+  "statusCode": 201,
+  "data": {
+    "_id": "contact_id",
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "phoneNumber": "+8801234567890",
+    "serviceType": {
+      "_id": "service_id",
+      "serviceName": "Student Visa Consultation"
+    },
+    "markAsRead": false,
+    "createdAt": "2026-05-07T10:00:00Z"
+  },
+  "message": "Contact created successfully",
+  "success": true
+}
+```
+
+#### 2. Get All Contacts
+**Endpoint**: `GET /otg/api/v1/contacts`  
+**Access**: Admin only
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "_id": "contact_id_1",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "phoneNumber": "+8801234567890",
+      "serviceType": {
+        "_id": "service_id",
+        "serviceName": "Student Visa Consultation"
+      },
+      "markAsRead": false,
+      "createdAt": "2026-05-07T10:00:00Z",
+      "updatedAt": "2026-05-07T10:00:00Z"
+    },
+    {
+      "_id": "contact_id_2",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phoneNumber": "+8801987654321",
+      "serviceType": {
+        "_id": "service_id",
+        "serviceName": "Work Visa Consultation"
+      },
+      "markAsRead": true,
+      "createdAt": "2026-05-06T09:00:00Z",
+      "updatedAt": "2026-05-06T09:00:00Z"
+    }
+  ],
+  "message": "Retrieved 2 contacts successfully",
+  "success": true
+}
+```
+
+#### 3. Get Single Contact
+**Endpoint**: `GET /otg/api/v1/contacts/:id`  
+**Access**: Admin only
+
+**Response** (200): Same as single contact object from get all response
+
+#### 4. Update Contact
+**Endpoint**: `PUT /otg/api/v1/contacts/:id`  
+**Access**: Admin only
+
+**Request**:
+```json
+{
+  "name": "Jane Smith Updated",
+  "email": "newemail@example.com",
+  "phoneNumber": "+8801234567890",
+  "serviceType": "new_service_id",
+  "markAsRead": true
+}
+```
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": {
+    "_id": "contact_id",
+    "name": "Jane Smith Updated",
+    "email": "newemail@example.com",
+    "phoneNumber": "+8801234567890",
+    "serviceType": {
+      "_id": "new_service_id",
+      "serviceName": "Work Visa Consultation"
+    },
+    "markAsRead": true,
+    "updatedAt": "2026-05-07T10:30:00Z"
+  },
+  "message": "Contact updated successfully",
+  "success": true
+}
+```
+
+#### 5. Delete Contact
+**Endpoint**: `DELETE /otg/api/v1/contacts/:id`  
+**Access**: Admin only
+
+**Response** (200):
+```json
+{
+  "statusCode": 200,
+  "data": null,
+  "message": "Contact deleted successfully",
+  "success": true
+}
+```
+
+---
+
 ### Testimonials Routes: `/otg/api/v1/testimonials`
 
 | Method | Endpoint | Access | Description              |
