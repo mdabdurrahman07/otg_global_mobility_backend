@@ -9,12 +9,13 @@ import serviceRoutes from "./src/routes/serviceRoutes.js";
 import testimonialRoutes from "./src/routes/testimonialRoutes.js";
 import inquiryRoutes from "./src/routes/inquiryRoutes.js";
 import emailRoutes from "./src/routes/emailRoutes.js";
+import contactRoutes from "./src/routes/contactRoutes.js";
 
 const app = express();
 // Middlewares
 const allowedOrigins = [
   "http://localhost:3000",
-  process.env.CORS_ORIGIN
+  process.env.CORS_ORIGIN,
 ].filter(Boolean);
 // CORS
 app.use(
@@ -22,7 +23,7 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
-      
+
       if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
@@ -30,7 +31,7 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json({ limit: "16kb" }));
@@ -66,7 +67,11 @@ app.use((err, req, res, next) => {
 
   // Handle Mongoose validation errors
   if (err.name === "ValidationError") {
-    error = new ApiError(400, "Validation error", Object.values(err.errors).map(e => e.message));
+    error = new ApiError(
+      400,
+      "Validation error",
+      Object.values(err.errors).map((e) => e.message),
+    );
   }
 
   // Handle Mongoose CastError
@@ -82,7 +87,10 @@ app.use((err, req, res, next) => {
 
   // If error is already an ApiError, use it as is
   if (!(error instanceof ApiError)) {
-    error = new ApiError(error.statusCode || 500, error.message || "Internal server error");
+    error = new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 
   return res.status(error.statusCode).json({
